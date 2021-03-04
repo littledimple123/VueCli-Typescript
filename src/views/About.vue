@@ -6,7 +6,14 @@
     <button @click="resetName">修改fullName</button>
     <hr />
     <!-- 使用v-bind向子组件传值 -->
-    <nameList v-for="item in arrlist" :key="item.id" v-bind="item"/>
+    <nameList
+      v-for="item in arrlist"
+      :key="item.id"
+      v-bind="item"
+      v-model="item.name"
+      @on-remove="remove"
+      @change-age="changeAge"
+    />
   </div>
 </template>
 <script lang='ts'>
@@ -29,24 +36,24 @@ interface Iuser {
 export default class Abouts extends Vue {
   firstName: string = "张";
   lastName: string = "三";
-  //定义一个数组
+  //定义一个数组  //双数女，单数男
   arrlist: Array<Iuser> = [
     {
       id: 0,
       name: "张三",
       age: 20,
-      sex: 1,
+      sex: 2,
     },
     {
       id: 1,
       name: "李三",
       age: 20,
-      sex: 0,
+      sex: 3,
     },
     {
       id: 2,
       name: "李三",
-      age: 20
+      age: 20,
     },
   ];
   // 相当于原来的计算 computed 中的get 和 set
@@ -70,11 +77,15 @@ export default class Abouts extends Vue {
     console.log("oldv", oldv);
   }
   //生命周期函数和之前一样
-  // created() {
-
-  // }
-  // mounted() {
-
-  // }
+  // created() {}
+  // mounted() {}
+  remove(id: number) {
+    const ids: number = this.arrlist.findIndex((item) => item.id === id);
+    this.arrlist.splice(ids, 1);
+  }
+  changeAge(id: number) {
+    const ids: number = this.arrlist.findIndex((item) => item.id === id);
+    this.arrlist[ids].age ++
+  }
 }
 </script>
