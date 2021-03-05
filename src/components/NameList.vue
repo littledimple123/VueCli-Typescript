@@ -22,6 +22,9 @@ export default class Namelist extends Vue {
   get userName() {
     return this.name;
   }
+  /*
+    @Model的第一个参数是emit要触发的方法，第二个参数是类型
+  */
   @Model('changeXMName', {type: String})
   cname!: string
   /*

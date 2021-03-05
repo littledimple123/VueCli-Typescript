@@ -14,11 +14,16 @@
       @on-remove="remove"
       @change-age="changeAge"
     />
+    <hr/>
+    <p>{{num}} <button @click='addone'>增加+1</button></p>
+    <p>{{lists.join(',')}}</p>
   </div>
 </template>
 <script lang='ts'>
 import { Component, Watch, Vue } from "vue-property-decorator";
 import NameList from "../components/NameList.vue";
+import {AboutStore} from "../store/module/about";
+
 //定义一个接口
 interface Iuser {
   id: number;
@@ -34,6 +39,14 @@ interface Iuser {
   },
 })
 export default class Abouts extends Vue {
+  //通过计算属性获取 AboutStore 里面的值
+  get num () {
+    return AboutStore.count
+  }
+  get lists () {
+    return AboutStore.filterArr
+  }
+
   firstName: string = "张";
   lastName: string = "三";
   //定义一个数组  //双数女，单数男
@@ -46,13 +59,13 @@ export default class Abouts extends Vue {
     },
     {
       id: 1,
-      name: "李三",
+      name: "李四",
       age: 20,
       sex: 3,
     },
     {
       id: 2,
-      name: "李三",
+      name: "王五",
       age: 20,
     },
   ];
@@ -78,14 +91,19 @@ export default class Abouts extends Vue {
   }
   //生命周期函数和之前一样
   // created() {}
-  // mounted() {}
+  mounted() {
+    AboutStore.getList()
+  }
   remove(id: number) {
     const ids: number = this.arrlist.findIndex((item) => item.id === id);
     this.arrlist.splice(ids, 1);
   }
   changeAge(id: number) {
     const ids: number = this.arrlist.findIndex((item) => item.id === id);
-    this.arrlist[ids].age ++
+    this.arrlist[ids].age++;
+  }
+  addone() {
+    AboutStore.updateCount({amount: 1})
   }
 }
 </script>
