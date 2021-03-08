@@ -1,5 +1,7 @@
 <template>
   <div class="about">
+    <span @click="toPageThree">第三页</span>
+    <hr/>
     <p>{{ firstName }}</p>
     <p>{{ lastName }}</p>
     <p>{{ fullName }}</p>
@@ -92,7 +94,9 @@ export default class Abouts extends Vue {
   //生命周期函数和之前一样
   // created() {}
   mounted() {
-    AboutStore.getList()
+    AboutStore.getList().then(res=>{
+      console.log(res)
+    })
   }
   remove(id: number) {
     const ids: number = this.arrlist.findIndex((item) => item.id === id);
@@ -104,6 +108,11 @@ export default class Abouts extends Vue {
   }
   addone() {
     AboutStore.updateCount({amount: 1})
+  }
+  toPageThree() {
+    this.$router.push({
+      path:'/pageThree'
+    })
   }
 }
 </script>

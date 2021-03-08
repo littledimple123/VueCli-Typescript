@@ -25,24 +25,26 @@ export default class About extends VuexModule implements CAboutState{
   // list: Array<number> = [1, 2, 3, 4, 5, 6] // 方法一
   list: Array<number> = [] // 方法二，定义list为空数组
   // 这相当于getter 参数不用state
-  get filterArr() {
+  get filterArr(): Array<number> {
     return this.list.filter(item => item % 2 === 0)
   }
   // 这相当于mutations  paylod 是mutations 的载荷 ，在大多数情况下是对象，这样可以换包含多个字段并且记录mutation会更易读
   @Mutation
-  updateCount(payload: any) {
+  updateCount(payload: any): void {
     this.count += payload.amount
   }
   @Mutation
-  updateList(payload: Array<number>) {
+  updateList(payload: Array<number>): void {
     this.list = payload
   }
   // 相当于action
   @Action
-  async getList() {
+  async getList(): Promise<boolean> {
     // 异步调用某个方法
     const res = await getlistArr()
     this.updateList(res)
+    return Promise.resolve(true)
+
   }
 }
 export const AboutStore = getModule(About)
